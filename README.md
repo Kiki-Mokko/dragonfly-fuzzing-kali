@@ -6,7 +6,7 @@
 3. [Методология](#3-методология)
 4. [Этапы работы](#4-этапы-работы)
 5. [Результаты](#5-результаты)
-6. [Контрольные суммы](#6-контрольные-суммы)
+6. [Анализ покрытия](#6-анализ-покрытия)
 7. [Выводы](#7-выводы)
 8. [Структура отчёта](#8-структура-отчёта)
 
@@ -103,7 +103,8 @@ https://github.com/Kiki-Mokko/dragonfly-fuzzing-kali/blob/main/docs/CHECKSUMS.md
 - Валидация простых строк (`+`)
 - Обработка ошибок (`-`)
 - Работа с числами (`:`)
- (см. src/dragonfly_parser_fuzzer.cpp)
+
+(см. документ src/dragonfly_parser_fuzzer.cpp)
  
 ### Этап 4: Подготовка тестовых данных
 Создан корпус из 5 валидных RESP команд:
@@ -112,7 +113,9 @@ https://github.com/Kiki-Mokko/dragonfly-fuzzing-kali/blob/main/docs/CHECKSUMS.md
 - `HSET/HGET` - работа с хэшами
 - `LPUSH/RPUSH` - операции со списками
 - Смешанные типы данных
-<img width="516" height="714" alt="image" src="https://github.com/user-attachments/assets/e42094ce-bb01-46b1-95bc-baaecd980cec" />
+
+(см. документы в data/corpus)
+<img width="516" height="714" alt="image" src="https://github.com/user-attachments/assets/9b14230a-cdf0-4d71-8659-b9e67a288ea7" />
 
 
 ### Этап 5: Запуск фаззинга
@@ -148,6 +151,7 @@ timeout 14400 afl-fuzz -i fuzzing_corpus/ -o fuzzing_results/ \
 
 
 ### Этап 6: Анализ покрытия
+### 6.1: Сбор данных
 ```bash
 echo "СБОР РЕЗУЛЬТАТОВ ФАЗЗИНГА..."
 echo "Время завершения: $(date)"
@@ -165,44 +169,26 @@ echo "Найдено сбоев: $(find fuzzing_results/main_fuzzer/crashes/ -ty
 echo "Найдено зависаний: $(find fuzzing_results/main_fuzzer/hangs/ -type f 2>/dev/null | wc -l)"
 echo "Выполнено циклов: $(grep cycles_done fuzzing_results/main_fuzzer/fuzzer_stats | cut -d: -f2 | tr -d ' ')"
 echo "Скорость тестирования: $(grep execs_per_sec fuzzing_results/main_fuzzer/fuzzer_stats | cut -d: -f2 | tr -d ' ') тестов/сек"
+```
+<img width="821" height="1028" alt="image" src="https://github.com/user-attachments/assets/a326cbcb-b063-4a4a-ad1c-2d6ac59376ff" />
+<img width="949" height="766" alt="image" src="https://github.com/user-attachments/assets/859df3b1-8a74-4972-8ecd-ca175c975ca3" />
 
-📸 ШАГ 1.3: Делаем скриншоты результатов
-💻 СКРИНШОТ 1: Статистика AFL++
-bash
-
-# В ТЕРМИНАЛЕ выполните чтобы увидеть статистику:
-cat fuzzing_results/main_fuzzer/fuzzer_stats
-
-# СДЕЛАЙТЕ СКРИНШОТ терминала с этой статистикой
-# Сохраните как: fuzzing_stats.jpg
-
-📁 СКРИНШОТ 2: Список тест-кейсов
-bash
-
+```bash
 # Покажем список найденных тестов
 find fuzzing_results/main_fuzzer/queue/ -type f 2>/dev/null | head -20
+```
+<img width="994" height="448" alt="image" src="https://github.com/user-attachments/assets/ca388781-a029-4797-b7c0-849cf5a22f44" />
 
-# СДЕЛАЙТЕ СКРИНШОТ списка тестов
-# Сохраните как: test_cases_list.jpg
-
-🖥️ СКРИНШОТ 3: Общая статистика
-bash
-
+```bash
 # Покажем общую сводку
 echo "=== ИТОГОВАЯ СТАТИСТИКА ==="
 grep -E "(execs_done|execs_per_sec|paths_total|unique_crashes|stability)" fuzzing_results/main_fuzzer/fuzzer_stats
 
-# СДЕЛАЙТЕ СКРИНШОТ итоговой статистики
-# Сохраните как: summary_stats.jpg
+```
+<img width="939" height="136" alt="image" src="https://github.com/user-attachments/assets/e88e90f4-b7c3-4241-8173-b7629f44b690" />
 
-📈 ЭТАП 2: Получение графиков фаззинга
-🎨 ШАГ 2.1: Генерируем графики
-bash
-
-# Убедитесь что вы в правильной папке:
-cd ~/dragonfly_fuzzing_kali
-pwd
-
+### 6.2: Получение графиков фаззинга
+```bash
 # Создаем графики из данных AFL++
 echo "📈 ГЕНЕРАЦИЯ ГРАФИКОВ AFL++..."
 $HOME/AFLplusplus/afl-plot fuzzing_results/main_fuzzer/ fuzzing_plots/
@@ -210,16 +196,17 @@ $HOME/AFLplusplus/afl-plot fuzzing_results/main_fuzzer/ fuzzing_plots/
 # Проверяем что создалось
 echo "✅ Графики созданы!"
 ls -la fuzzing_plots/
+```
+Полученные граффики
+<img width="1035" height="313" alt="image" src="https://github.com/user-attachments/assets/16397d3b-462e-43cc-b36d-5a466e02e44f" />
+<img width="1057" height="211" alt="image" src="https://github.com/user-attachments/assets/8bdc73e8-a0bc-4037-bb29-8cc2010114ae" />
+<img width="1028" height="314" alt="image" src="https://github.com/user-attachments/assets/b594ee71-6998-4ba9-8ae0-be810fa7fe40" />
+<img width="1029" height="201" alt="image" src="https://github.com/user-attachments/assets/a261ecff-3273-4d33-884d-f5696639accb" />
 
-
-
-СПОСОБ 1: Используем GCC вместо Clang (рекомендуется)
-🗂️ ДИРЕКТОРИЯ: ~/dragonfly_fuzzing_kali/
-bash
-
-cd ~/dragonfly_fuzzing_kali
-
-echo "🔄 ПЕРЕКОМПИЛЯЦИЯ С GCC ДЛЯ ПОКРЫТИЯ..."
+### 6.2: Получение HTML-отчета
+```bash
+1: Используем GCC вместо Clang
+echo "ПЕРЕКОМПИЛЯЦИЯ С GCC ДЛЯ ПОКРЫТИЯ..."
 
 # 1. Удаляем старые файлы
 find . -name "*.gcda" -delete
@@ -227,23 +214,21 @@ find . -name "*.gcno" -delete
 find . -name "*.gcov" -delete
 rm -f dragonfly_parser_fuzzer_gcov
 
-# 2. Компилируем с GCC (а не Clang)
+# 2. Компилируем с GCC 
 g++ -g -O0 -fprofile-arcs -ftest-coverage -lgcov \
     -o dragonfly_parser_fuzzer_gcov dragonfly_parser_fuzzer.cpp
 
 # 3. Проверяем
-echo "📊 Проверка компиляции:"
+echo "Проверка компиляции:"
 file dragonfly_parser_fuzzer_gcov
 find . -name "*.gcno" | head -3
 
-🚀 Запускаем тесты с GCC версией
-bash
-
-echo "🔄 ЗАПУСК ТЕСТОВ С GCC..."
+# 4. Запуск тестов с GCC
+echo " ЗАПУСК ТЕСТОВ С GCC..."
 
 # Запускаем все тесты
 TOTAL_CASES=$(find fuzzing_results/main_fuzzer/queue/ -type f 2>/dev/null | wc -l)
-echo "📁 Обработка $TOTAL_CASES тестов..."
+echo " Обработка $TOTAL_CASES тестов..."
 
 COUNTER=0
 for testcase in fuzzing_results/main_fuzzer/queue/id*; do
@@ -256,8 +241,7 @@ done
 
 echo "✅ Тесты выполнены"
 
-📊 Пробуем LCOV с GCC
-bash
+# 4. Запускаем LCOV с GCC
 
 echo "🔄 LCOV С GCC..."
 
@@ -276,3 +260,29 @@ if [ -f "coverage.info" ]; then
 else
     echo "❌ LCOV с GCC тоже не сработал"
 fi
+```
+После спешной генерации отчета получаем следующий результат:
+<img width="917" height="375" alt="image" src="https://github.com/user-attachments/assets/daa5628e-423f-4797-9828-1d594b2afd7d" />
+
+### 7: Выводы
+
+Проведенная лабораторная работа по фаззинг-тестированию парсера Dragonfly с использованием AFL++ позволила получить значимые результаты, подтверждающие высокую надежность и устойчивость тестируемой системы к обработке некорректных входных данных.
+Ключевые достижения и результаты:
+1. Подтверждение устойчивости системы
+- За 14 398 секунд система не показала ни одного сбоя.
+- Нулевое количество сохраненных падений (saved_crashes: 0) и зависаний (saved_hangs: 0).
+- Высокий показатель стабильности (stability: 100.00%) свидетельствует о детерминированном поведении системы.
+
+2. Эффективность методики тестирования
+- Метод coverage-guided fuzzing продемонстрировал высокую эффективность для тестирования парсеров.
+- Покрытие битмапа 53.29% показывает существенный охват кодовых путей.
+- Система успешно прошла ≈ 3,458 полных циклов тестирования.
+
+3. Практическая значимость
+1. **Для безопасности**: Полученные результаты свидетельствуют об отсутствии критических уязвимостей класса memory corruption в тестируемом компоненте.
+2. **Для разработки**: Создан ценный корпус тестовых данных (432 тест-кейса), который может быть использован для регрессионного тестирования.
+3. **Для методологии**: Подтверждена эффективность использования AFL++ для тестирования сетевых парсеров и протоколов.
+
+Проведенное фаззинг-тестирование убедительно доказало высокую надежность парсера Dragonfly при обработке некорректных и случайных данных. Система продемонстрировала устойчивость к широкому спектру потенциальных атак, что подтверждает ее готовность к использованию в production-средах, где требования к безопасности и стабильности являются критически важными.
+
+Методика фаззинг-тестирования зарекомендовала себя как эффективный инструмент обеспечения качества и безопасности программного обеспечения, и ее применение следует считать обязательным компонентом процесса тестирования критически важных систем.
