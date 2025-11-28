@@ -11,7 +11,7 @@
 
 ---
 
-### 1: Цель работы
+### 1: 🎯 Цель работы
 
 Фаззинг-тестирование парсера RESP протокола базы данных DragonflyDB для проверки устойчивости к невалидным и случайным входным данным.
 Задачи:
@@ -39,7 +39,7 @@ world        ← значение
 
 ---
 
-### 3: Методология
+### 3: ⚙️ Методология
 Инструменты:
 - **AFL++ 4.35a** - фаззинг-фреймворк
 - **Kali Linux** - операционная система
@@ -53,7 +53,7 @@ world        ← значение
 
 ---
 
-### 4: Этапы работы
+### 4: 🔄 Этапы работы
 
 ### 4. 1: Подготовка среды
 ```bash
@@ -69,13 +69,13 @@ sudo apt install -y clang lld llvm g++ lcov gcovr
 
 ### 4.2: Сбор контрольных сумм
 ```bash
-echo "🧮 Подсчёт контрольных сумм файлов парсера..."
+echo "Подсчёт контрольных сумм файлов парсера..."
 
 # Общая контрольная сумма интерфейса
 cat parser_files.txt | sort | xargs cat 2>/dev/null | sha256sum > parser_interface_checksum.txt
 
 # Индивидуальные контрольные суммы
-echo "📊 Индивидуальные контрольные суммы:"
+echo " Индивидуальные контрольные суммы:"
 while read file; do
     if [ -f "$file" ]; then
         sha256sum "$file"
@@ -83,10 +83,10 @@ while read file; do
 done < parser_files.txt > individual_checksums.txt
 
 echo "=== РЕЗУЛЬТАТЫ ПОДСЧЕТА КОНТРОЛЬНЫХ СУММ ==="
-echo "🎯 Общая контрольная сумма интерфейса парсера:"
+echo "Общая контрольная сумма интерфейса парсера:"
 cat parser_interface_checksum.txt
 echo ""
-echo "📋 Индивидуальные суммы:"
+echo " Индивидуальные суммы:"
 cat individual_checksums.txt
 echo ""
 
@@ -127,8 +127,8 @@ for testfile in fuzzing_corpus/*.resp; do
     echo -n "Тест $(basename $testfile): "
     ./dragonfly_parser_fuzzer < "$testfile"
     echo " результат: $?"
-done
-🚀 Запускаем фаззинг с исправленной обёрткой:
+
+Запускаем фаззинг с исправленной обёрткой:
 echo "ЗАПУСК ФАЗЗИНГА С ИСПРАВЛЕННОЙ ОБЁРТКОЙ..."
 echo "Время начала: $(date)"
 
@@ -189,7 +189,7 @@ grep -E "(execs_done|execs_per_sec|paths_total|unique_crashes|stability)" fuzzin
 ### 6.2: Получение графиков фаззинга
 ```bash
 # Создаем графики из данных AFL++
-echo "📈 ГЕНЕРАЦИЯ ГРАФИКОВ AFL++..."
+echo " ГЕНЕРАЦИЯ ГРАФИКОВ AFL++..."
 $HOME/AFLplusplus/afl-plot fuzzing_results/main_fuzzer/ fuzzing_plots/
 
 # Проверяем что создалось
@@ -242,7 +242,7 @@ echo "✅ Тесты выполнены"
 
 # 4. Запускаем LCOV с GCC
 
-echo "🔄 LCOV С GCC..."
+echo " LCOV С GCC..."
 
 lcov --capture --directory . --output-file coverage.info
 
