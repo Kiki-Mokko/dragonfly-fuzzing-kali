@@ -1,0 +1,6 @@
+# environment variables:
+AFL_CUSTOM_INFO_PROGRAM=./dragonfly_parser_fuzzer
+AFL_CUSTOM_INFO_PROGRAM_ARGV=@@
+AFL_CUSTOM_INFO_OUT=fuzzing_results//main_fuzzer
+# command line:
+'/home/kali/AFLplusplus/afl-fuzz' '-i' 'fuzzing_corpus/' '-o' 'fuzzing_results/' '-M' 'main_fuzzer' '-t' '1000' '-m' '512M' '--' './dragonfly_parser_fuzzer' '@@'
