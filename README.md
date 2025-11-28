@@ -11,7 +11,7 @@
 
 ---
 
-### 1: 🎯 Цель работы
+### 1: Цель работы
 
 Фаззинг-тестирование парсера RESP протокола базы данных DragonflyDB для проверки устойчивости к невалидным и случайным входным данным.
 Задачи:
@@ -39,7 +39,7 @@ world        ← значение
 
 ---
 
-### 3: ⚙️ Методология
+### 3: Методология
 Инструменты:
 - **AFL++ 4.35a** - фаззинг-фреймворк
 - **Kali Linux** - операционная система
@@ -53,7 +53,7 @@ world        ← значение
 
 ---
 
-### 4: 🔄 Этапы работы
+### 4: Этапы работы
 
 ### 4. 1: Подготовка среды
 ```bash
@@ -193,7 +193,7 @@ echo " ГЕНЕРАЦИЯ ГРАФИКОВ AFL++..."
 $HOME/AFLplusplus/afl-plot fuzzing_results/main_fuzzer/ fuzzing_plots/
 
 # Проверяем что создалось
-echo "✅ Графики созданы!"
+echo " Графики созданы!"
 ls -la fuzzing_plots/
 ```
 Полученные граффики
@@ -238,7 +238,7 @@ for testcase in fuzzing_results/main_fuzzer/queue/id*; do
     ./dragonfly_parser_fuzzer_gcov "$testcase" >/dev/null 2>&1
 done
 
-echo "✅ Тесты выполнены"
+echo " Тесты выполнены"
 
 # 4. Запускаем LCOV с GCC
 
@@ -247,17 +247,17 @@ echo " LCOV С GCC..."
 lcov --capture --directory . --output-file coverage.info
 
 if [ -f "coverage.info" ]; then
-    echo "✅ LCOV С GCC СРАБОТАЛ!"
+    echo " LCOV С GCC СРАБОТАЛ!"
     
     # Создаем HTML отчёт
     genhtml coverage.info --output-directory coverage_report_gcc --title "Покрытие кода (GCC)"
     
     if [ -f "coverage_report_gcc/index.html" ]; then
-        echo "✅ HTML отчёт создан: coverage_report_gcc/index.html"
+        echo " HTML отчёт создан: coverage_report_gcc/index.html"
         xdg-open coverage_report_gcc/index.html 2>/dev/null || echo "Откройте вручную"
     fi
 else
-    echo "❌ LCOV с GCC тоже не сработал"
+    echo " LCOV с GCC тоже не сработал"
 fi
 ```
 После спешной генерации отчета получаем следующий результат:
