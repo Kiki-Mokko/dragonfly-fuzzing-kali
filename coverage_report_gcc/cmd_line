@@ -1,1 +1,0 @@
-genhtml coverage.info --output-directory coverage_report_gcc --title 'Покрытие кода Dragonfly Parser (GCC)'
