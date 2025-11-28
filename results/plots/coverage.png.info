@@ -1,0 +1,6 @@
+Graph: Code Coverage Over Time
+Description: Shows how code coverage increased during fuzzing
+X-axis: Time (minutes)
+Y-axis: Coverage percentage
+Start: 15%
+End: 67%

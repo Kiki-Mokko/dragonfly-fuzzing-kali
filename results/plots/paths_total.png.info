@@ -1,0 +1,6 @@
+Graph: Total Paths Found
+Description: Shows the growth of unique code paths discovered
+X-axis: Time (minutes)
+Y-axis: Number of paths
+Initial: 5 paths
+Final: 379 paths

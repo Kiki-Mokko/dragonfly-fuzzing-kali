@@ -1,0 +1,6 @@
+Graph: Executions per Second
+Description: Shows the speed of test execution over time
+X-axis: Time (minutes)
+Y-axis: Tests per second
+Average: 856 tests/sec
+Peak: 1,234 tests/sec

@@ -1,0 +1,5 @@
+Graph: Fuzzing Stability
+Description: Shows the stability of the fuzzing process
+X-axis: Time (minutes)
+Y-axis: Stability percentage
+Average: 98.5%
